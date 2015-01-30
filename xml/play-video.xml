@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playlist version="1" xmlns="http://xspf.org/ns/0/">
+	{slit}
+	<track>
+		<title>
+			{title}
+		</title>
+		<poster>
+			{poster}
+		</poster>
+		<mp4>
+			{mp4-link}
+		</mp4>
+		<webm>
+			{webm-link}
+		</webm>
+	</track>
+	{slit}
+</playlist>

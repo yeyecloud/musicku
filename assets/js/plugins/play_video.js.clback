@@ -1,0 +1,77 @@
+$(document).ready(function(){
+	$('a#more-comment').on('click',function(){
+		var s_id=$(this).attr('data-s_id');
+		var pages=parseInt($(this).attr('data-pages'));
+		var urlGet=site_url+'/music_home/playvideo/getComment/'+s_id+'/'+pages;
+		 $.get(urlGet,function(data,status){
+		 	$('section#content-comment').fadeOut(100);
+		 	$('section#content-comment').append(data);
+		 	$('section#content-comment').fadeIn(100);
+		  });
+		  $(this).attr('data-pages',parseInt(pages+1));
+		return false;
+	});
+	$('a#href-comment-form').on('click',function(){
+        
+       $('html,body').animate({
+            scrollTop: $('#comment-form').offset().top 
+        }, {
+            duration: 'slow', 
+            easing: 'swing'
+        });*/
+        return false; 
+    }); 
+	$.ajax({
+        type: "GET",
+        url: 'http://localhost:120/ci_music/xml-play-video-33.xml',//site_url + '/xml-play-song-' + s_id + '.xml',
+        dataType: "xml",
+        success: function(xml) {
+            $(xml).find('track').each(function() {
+                var self = $(this),
+                    mytitle = self.find('title').text();
+                    myposter = self.find('poster').text();
+                    mymp4 = decodeURIComponent(self.find('mp4').text());
+                    mywebm = decodeURIComponent(self.find('webm').text());
+                    /*playlist = JSON.stringify({
+                        title: mytitle,
+                        poster: myposter,
+                        mp4: mymp4,
+                       	webm:mywebm
+                    }), // Convert the XML nodes into JSON formatted strings
+                   // playlistObject = $.parseJSON(playlist); // Convert the JSON formatted strings into JSON objects and add to playlist
+                //playvideo.add(playlistObject);
+                //$("#jplayer_1").jPlayer("play");
+                //$("#jplayer_1").jPlayer("repeat");*/
+               
+                $("#jplayer_1").jPlayer({
+				    ready: function () {
+				      $(this).jPlayer("setMedia", {
+				        title: mytitle,
+				        mp4:  mymp4,
+				        webmv: mywebm,
+				        poster: myposter
+				      }).jPlayer("play");
+				    },
+				    playlistOptions: {
+					  autoPlay: true,
+					  loopOnPrevious: false,
+					  shuffleOnLoop: true,
+					  enableRemoveControls: false,
+					},
+				    swfPath: "js",
+				    supplied: "webmv, ogv, m4v, mp4, webm",
+				    size: {
+				      width: "100%",
+				      height: "auto",
+				      cssClass: "jp-video-360p"
+				    },
+				    globalVolume: true,
+				    smoothPlayBar: true,
+				    keyEnabled: true,
+				  });
+            });
+            
+        }
+    });
+	
+})
